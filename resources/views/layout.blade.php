@@ -32,6 +32,8 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
 
+         
+
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="{{ url('vista')  }}"><img class="img-resposive" width="30px" height="30px"
                                                          src="{{ url('/img/service.svg')  }}"></a></li>

@@ -8,6 +8,9 @@ class Productos extends Model
 {
     protected  $table="productos";
 
+    public $fillable = ['nombre','descripcion'];
+
+
 
 
 

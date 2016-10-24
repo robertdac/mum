@@ -39,10 +39,8 @@
                 @endforeach
 
                 <tr>
-
                     <td>{{ session()->get('descuento')  }}</td>
                     <td>{{ session()->get('3x2')  }}</td>
-                    <td><a href="{{ url('/') }}" class="btn btn-info btn-sm" role="button">volver al menu</a></td>
 
                 </tr>
 
@@ -50,6 +48,9 @@
             </table>
 
         </table>
+
+        <div  class="text-center"> <a href="{{ url('/') }}" class="btn btn-info btn-sm" role="button">volver al menu</a> </div>
+
     </div>
 
     <script>

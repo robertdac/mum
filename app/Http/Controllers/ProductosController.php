@@ -17,7 +17,7 @@ class ProductosController extends Controller
     public function index()
     {
         $productos = Productos::all();
-       // dd($productos[0]);
+        // dd($productos[0]);
         return view('productos.index')->with(['productos' => $productos]);
     }
 
@@ -28,7 +28,7 @@ class ProductosController extends Controller
      */
     public function create()
     {
-        //
+        return view('productos.create');
     }
 
     /**
@@ -39,7 +39,37 @@ class ProductosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        //dd($input = $request->all());
+
+        $this->validate($request, [
+            'nombre' => 'required',
+        ]);
+
+       /* $this->validate($request, [
+            'nombre' => 'required',
+            'descripcion' => 'required',
+            'precio' => 'integer',
+            'unidad' => 'required',
+            'tipo' => 'required',
+            'medida' => 'required'
+        ]);*/
+
+
+
+
+
+
+        $input = $request->all();
+ //dd($input);
+
+        Productos::create($input);
+
+        Session::flash('flash_message', 'Task successfully added!');
+
+        return redirect()->back();
+
+
     }
 
     /**

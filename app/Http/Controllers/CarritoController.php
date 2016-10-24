@@ -24,6 +24,10 @@ class CarritoController extends Controller
 
 
         $item = $request->session()->get('carro');
+        //$request->session()->forget('carro');
+        //unset($item[0]);
+
+        //dd($item);
 
 
         //Busca  si un pedido esta repetido
@@ -70,8 +74,9 @@ class CarritoController extends Controller
     {
 
 
-        $pro = array_search($id, array_column($request->session()->get('carro'), 'id'));
-        $lolo = $request->session()->get('carro.' . $pro);
+        $carro = $request->session()->get('carro');
+        $pro = $this->buscaIdCarrito($carro, $id);
+
         $items = $request->session()->get('carro.' . $pro . '.precio');
         $medida = $request->session()->get('carro.' . $pro . '.medida');
         $unidad = $request->session()->get('carro.' . $pro . '.unidad');
@@ -84,7 +89,6 @@ class CarritoController extends Controller
         $this->tresx2();
 
 
-
         return view('carrito');
 
 
@@ -93,9 +97,11 @@ class CarritoController extends Controller
 
     public function restCarrito(Request $request, $id)
     {
+        $carro = $request->session()->get('carro');
 
-        $pro = array_search($id, array_column($request->session()->get('carro'), 'id'));
-        $lolo = $request->session()->get('carro.' . $pro);
+        $pro = $this->buscaIdCarrito($carro, $id);
+
+
         $items = $request->session()->get('carro.' . $pro . '.precio');
         $medida = $request->session()->get('carro.' . $pro . '.medida');
         $unidad = $request->session()->get('carro.' . $pro . '.unidad');
@@ -118,9 +124,11 @@ class CarritoController extends Controller
     public function restFilaCarrito($id, Request $request)
     {
 
-        $pro = array_search($id, array_column($request->session()->get('carro'), 'id'));
+        $soloId = $request->session()->get('carro');
+        //$resul = array_search($id, $soloId);
 
-        $request->session()->get("carro");
+
+        $pro = $this->buscaIdCarrito($soloId, $id);
 
         $event_data_display = $request->session()->get("carro");
         unset($event_data_display[$pro]);
@@ -138,8 +146,6 @@ class CarritoController extends Controller
 
     public function totalCarrito()
     {
-
-
 
 
         $precio = session()->get('carro');
@@ -191,7 +197,7 @@ class CarritoController extends Controller
 
 
         if ($num >= 4) {
-            session()->set('descuento', 'Descuento del 20%  :P');
+            session()->set('descuento', '!Ya armaste tu menu!, recibes el 20% Dto.');
 
         } else {
 
@@ -211,26 +217,18 @@ class CarritoController extends Controller
 
         foreach ($productos as $pro) {
 
-            if ($pro['medida'] == 'gr' && $pro['unidad'] >= 300) {
 
-
-
-                session()->set('3x2', 'estas llevando 3 productos iguales, ahora solo pagas dos');
-
-                break;
-
-
-            }
+           // dd($pro['medida'] == 'ud' && $pro['unidad'] >= 3);
 
             if ($pro['medida'] == 'ud' && $pro['unidad'] >= 3) {
 
-
-                //dd('helooooo');
-
-                session()->set('3x2', 'estas llevando 3 productos iguales, ahora solo pagas dos');
-
+                session()->set('3x2', 'por la compra de 3 '.$pro['nombre'] .' solo pagas dos');
 
                 break;
+
+            } else {
+
+                session()->forget('3x2');
 
 
             }
@@ -238,7 +236,30 @@ class CarritoController extends Controller
 
         }
 
-        //session()->forget('3x2');
+
+    }
+
+    /*
+     * Buca la poscion exacta  de un id del producto
+     * lamentablemnete en esta ocacion no me sirve
+     * array_search('snart', array_column($array_subjected_to_search, 'name'));
+     *
+     * */
+
+
+    public function buscaIdCarrito($array, $id)
+    {
+
+
+        foreach ($array as $index => $value) {
+            if ($id == $value['id']) {
+                return $index;
+                break;
+
+            }
+
+
+        }
 
 
     }

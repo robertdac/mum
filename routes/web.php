@@ -14,7 +14,12 @@
 
 Route::group(['middleware' => ['web']], function () {
 
-    Route::resource('/', 'ProductosController');
+
+
+
+    Route::get('/', 'ProductosController@index');
+
+    Route::resource('productos', 'ProductosController');
     Route::get('carrito/{id}', 'CarritoController@addCarrito');
     Route::get('vista', 'CarritoController@vistaCarrito');
     Route::get('suma/{id}', 'CarritoController@sumCarrito');
